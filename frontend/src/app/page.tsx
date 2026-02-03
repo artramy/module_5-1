@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface HealthStatus {
   status: string;
@@ -8,6 +9,7 @@ interface HealthStatus {
 }
 
 export default function Home() {
+  const { user } = useAuth();
   const [health, setHealth] = useState<HealthStatus | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -25,8 +27,26 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full mx-4">
+        {/* 로그인 상태별 환영 메시지 */}
+        {user ? (
+          <div className="mb-6 p-4 bg-indigo-50 rounded-lg border border-indigo-200">
+            <h2 className="text-xl font-bold text-indigo-800 mb-1">
+              환영합니다! 🎉
+            </h2>
+            <p className="text-indigo-600">
+              <span className="font-semibold">{user.username}</span>님, 로그인되었습니다.
+            </p>
+          </div>
+        ) : (
+          <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+            <p className="text-gray-600 text-center">
+              로그인하여 더 많은 기능을 이용하세요
+            </p>
+          </div>
+        )}
+
         <h1 className="text-3xl font-bold text-gray-800 text-center mb-6">
           Module 5
         </h1>
